@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
-import { Text } from 'react-native';
+import React, { FC, useEffect } from 'react';
+import { Keyboard, Text } from 'react-native';
 import styled from 'styled-components/native';
 import { useOnClickOutsideComponent } from '../../hooks';
 
@@ -16,26 +16,52 @@ type SearchBarProps = {
 export const SearchBar: FC<SearchBarProps> = (props) => {
     const { placeholder, inputValue, setInputValue, LeftComponent, DropdownComponent, RightComponent } = props;
 
-    const { ref, clickedInside } = useOnClickOutsideComponent('search-bar-test-id');
+    const { ref, clickedInside, registerClickInside, reset } = useOnClickOutsideComponent('search-bar-test-id');
 
     const shouldDisplayDropdown = !!clickedInside && !!DropdownComponent;
 
+    const handleFocus = () => {
+        registerClickInside();
+    };
+
+    const handleBlur = () => {
+        reset();
+        Keyboard.dismiss();
+    };
+
+    useEffect(() => {
+        if (!clickedInside) handleBlur();
+    }, [clickedInside]);
+
     return (
-        <Row ref={ref}>
+        <StyledRow ref={ref}>
             <Text>Start</Text>
             <LeftComponent />
 
             <Column>
-                <StyledTextInput bottomRounded={!shouldDisplayDropdown} placeholder={placeholder} value={inputValue} onChangeText={setInputValue} />
+                <StyledTextInput
+                    bottomRounded={!shouldDisplayDropdown}
+                    placeholder={placeholder}
+                    value={inputValue}
+                    onChangeText={setInputValue}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
+                    keyboardShouldPersistTaps='always'
+                />
 
                 {shouldDisplayDropdown && <DropdownComponent />}
             </Column>
 
             <RightComponent />
             <Text>End</Text>
-        </Row>
+        </StyledRow>
     );
 };
+
+const StyledRow = styled(Row)`
+    border-color: black;
+    border-width: 2;
+`;
 
 type StyledTextInputProps = {
     bottomRounded: boolean;

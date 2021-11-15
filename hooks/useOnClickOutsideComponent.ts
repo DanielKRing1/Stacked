@@ -17,11 +17,10 @@ export const useOnClickOutsideComponent = (listenerId: string) => {
         // Clicked
         // console.log(e.target);
         console.log('check this');
-        console.log(ref.current._children);
+        console.log(ref.current._children.length);
         if (ref && ref.current && ref.current._children && ref.current._children.includes(e.target)) {
             console.log('INSIIIIIIDE');
-            setClickedInside(true);
-            setClickedInsideCount(clickedInsideCount + 1);
+            registerClickInside();
 
             console.log(clickedInside);
         }
@@ -38,6 +37,11 @@ export const useOnClickOutsideComponent = (listenerId: string) => {
         return () => rmClickListener(listenerId);
     }, [addClickListener, handleClick, listenerId, ref, rmClickListener]);
 
+    const registerClickInside = () => {
+        setClickedInside(true);
+        setClickedInsideCount(clickedInsideCount + 1);
+    };
+
     const reset = () => {
         setClickedInside(false);
         setClickedInsideCount(0);
@@ -46,6 +50,7 @@ export const useOnClickOutsideComponent = (listenerId: string) => {
     return {
         ref,
         clickedInside,
+        registerClickInside,
         clickedInsideCount,
         reset,
     };
