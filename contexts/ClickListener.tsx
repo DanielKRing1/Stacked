@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
 import { GestureResponderEvent, TouchableWithoutFeedback, View } from 'react-native';
 
 type ClickListenerMap = Record<string, OnClickCallback>;
@@ -8,11 +8,7 @@ type ClickListenerContextType = {
     addClickListener: (id: string, cb: OnClickCallback) => void;
     rmClickListener: (id: string) => void;
 };
-export const ClickListenerContext = React.createContext<ClickListenerContextType>({
-    clickListeners: {},
-    addClickListener: () => {},
-    rmClickListener: () => {},
-});
+const ClickListenerContext = React.createContext<ClickListenerContextType | undefined>(undefined);
 
 export const ClickListenerProvider: FC = (props) => {
     const { children } = props;
@@ -30,7 +26,7 @@ export const ClickListenerProvider: FC = (props) => {
                 return nextState;
             });
         },
-        [clickListeners]
+        [setClickListeners]
     );
 
     const rmClickListener = React.useCallback(
@@ -50,29 +46,29 @@ export const ClickListenerProvider: FC = (props) => {
         (e) => {
             console.log('execute');
 
-            console.log(e);
-            console.log(Object.keys(e));
-            console.log(e.target);
+            // console.log(e);
+            // console.log(Object.keys(e));
+            // console.log(e.target);
 
-            console.log(listenerCbs);
-            console.log(clickListeners);
+            // console.log(listenerCbs);
+            // console.log(clickListeners);
 
-            console.log(Object.keys(clickListeners));
-            console.log(Object.values(clickListeners));
+            // console.log(Object.keys(clickListeners));
+            // console.log(Object.values(clickListeners));
 
-            console.log('length');
-            console.log(listenerCbs.length);
+            // console.log('length');
+            // console.log(listenerCbs.length);
 
             for (let i = 0; i < listenerCbs.length; i++) {
-                console.log(i);
+                // console.log(i);
                 const cb = listenerCbs[i];
-                console.log('cb');
-                console.log(cb);
+                // console.log('cb');
+                // console.log(cb);
 
-                console.log('listenerCbs');
-                console.log(listenerCbs);
-                console.log('keys');
-                console.log(Object.keys(clickListeners));
+                // console.log('listenerCbs');
+                // console.log(listenerCbs);
+                // console.log('keys');
+                // console.log(Object.keys(clickListeners));
 
                 // if(cb === null) console.log('null');
                 // else if(cb == null) console.log('null')
@@ -84,17 +80,23 @@ export const ClickListenerProvider: FC = (props) => {
         [listenerCbs, clickListeners]
     );
 
-    const log = () => {
-        console.log('clicked');
-    };
-
     return (
         <ClickListenerContext.Provider value={{ clickListeners, addClickListener, rmClickListener }}>
-            <TouchableWithoutFeedback onPress={log}>
+            <TouchableWithoutFeedback onPress={executeListenerCbs}>
                 <View style={{ flex: 1, height: '100%', width: '100%' }}>{children}</View>
             </TouchableWithoutFeedback>
         </ClickListenerContext.Provider>
     );
+};
+
+export const useClickListener = () => {
+    console.log('1.1.1');
+    const context = useContext(ClickListenerContext);
+    console.log('1.1.2');
+
+    if (!context) throw new Error('ClickListenerContext is undefined');
+    console.log('1.1.3');
+    return context;
 };
 
 // # Usage

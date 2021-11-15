@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Text } from 'react-native';
 import styled from 'styled-components/native';
-import { useOnClickOutsideComponent } from '../../hooks/useOnClickOutsideComponent';
+import { useOnClickOutsideComponent } from '../../hooks';
 
 import { Column, Row } from '../Flex';
 
@@ -16,9 +16,12 @@ type SearchBarProps = {
 export const SearchBar: FC<SearchBarProps> = (props) => {
     const { placeholder, inputValue, setInputValue, LeftComponent, DropdownComponent, RightComponent } = props;
 
+    console.log('1.1');
     const { ref, clickedInside } = useOnClickOutsideComponent('search-bar-test-id');
+    console.log('1.2');
 
-    const shouldDisplayDropdown = clickedInside && !!DropdownComponent;
+    const shouldDisplayDropdown = !!clickedInside && !!DropdownComponent;
+    console.log('1.3');
 
     return (
         <Row>

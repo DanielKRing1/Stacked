@@ -132,13 +132,6 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
 
     console.log(DynamicRealm.getSchemaNames());
 
-    const { addClickListener, rmClickListener } = React.useContext(ClickListenerContext);
-
-    React.useEffect(() => {
-        console.log('adding');
-        addClickListener('abc', () => console.log('hihi'));
-    }, []);
-
     return (
         <View style={styles.container}>
             <ScrollView>
