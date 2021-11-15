@@ -16,20 +16,17 @@ type SearchBarProps = {
 export const SearchBar: FC<SearchBarProps> = (props) => {
     const { placeholder, inputValue, setInputValue, LeftComponent, DropdownComponent, RightComponent } = props;
 
-    console.log('1.1');
     const { ref, clickedInside } = useOnClickOutsideComponent('search-bar-test-id');
-    console.log('1.2');
 
     const shouldDisplayDropdown = !!clickedInside && !!DropdownComponent;
-    console.log('1.3');
 
     return (
-        <Row>
+        <Row ref={ref}>
             <Text>Start</Text>
             <LeftComponent />
 
             <Column>
-                <StyledTextInput ref={ref} bottomRounded={!shouldDisplayDropdown} placeholder={placeholder} value={inputValue} onChangeText={setInputValue} />
+                <StyledTextInput bottomRounded={!shouldDisplayDropdown} placeholder={placeholder} value={inputValue} onChangeText={setInputValue} />
 
                 {shouldDisplayDropdown && <DropdownComponent />}
             </Column>
@@ -50,5 +47,5 @@ const StyledTextInput = styled.TextInput<StyledTextInputProps>`
     border-radius: 10px;
     ${({ bottomRounded }: StyledTextInputProps) => (bottomRounded ? `` : `border-bottom-left-radius: 0px;`)}
     ${({ bottomRounded }: StyledTextInputProps) => (bottomRounded ? `` : `border-bottom-right-radius: 0px;`)}
-  border-color: #d0d0d0;
+    border-color: #d0d0d0;
 `;

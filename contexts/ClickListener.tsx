@@ -90,12 +90,9 @@ export const ClickListenerProvider: FC = (props) => {
 };
 
 export const useClickListener = () => {
-    console.log('1.1.1');
     const context = useContext(ClickListenerContext);
-    console.log('1.1.2');
 
     if (!context) throw new Error('ClickListenerContext is undefined');
-    console.log('1.1.3');
     return context;
 };
 

@@ -4,14 +4,8 @@ import { GestureResponderEvent } from 'react-native';
 import { useClickListener } from '../contexts';
 
 export const useOnClickOutsideComponent = (listenerId: string) => {
-    console.log('heree0.125');
-
     const [clickedInside, setClickedInside] = useState(false);
-    console.log('heree0.25');
-
     const [clickedInsideCount, setClickedInsideCount] = useState(0);
-
-    console.log('heree0.5');
 
     const ref = useRef();
     const ctxt = useClickListener();
@@ -19,46 +13,35 @@ export const useOnClickOutsideComponent = (listenerId: string) => {
     if (!ctxt) throw new Error('ClickListener is undefined');
     const { addClickListener, rmClickListener } = ctxt;
 
-    console.log('heree1');
+    const handleClick = useCallback((e: GestureResponderEvent) => {
+        // Clicked
+        // console.log(e.target);
+        console.log('check this');
+        console.log(ref.current._children);
+        if (ref && ref.current && ref.current._children && ref.current._children.includes(e.target)) {
+            console.log('INSIIIIIIDE');
+            setClickedInside(true);
+            setClickedInsideCount(clickedInsideCount + 1);
 
-    const handleClick = useCallback(
-        (e: GestureResponderEvent) => {
-            // Clicked inside
-            if (ref && ref.current && ref.current.contains(e.target)) {
-                setClickedInside(true);
-                setClickedInsideCount(clickedInsideCount + 1);
-
-                console.log(clickedInside);
-            }
-            // Clicked outside
-            else {
-                reset();
-                console.log('clicked outside');
-            }
-        },
-        [clickedInsideCount]
-    );
-
-    console.log('heree2');
+            console.log(clickedInside);
+        }
+        // Clicked outside
+        else {
+            reset();
+            console.log('clicked outside');
+        }
+    }, []);
 
     useEffect(() => {
-        console.log('heree5');
-
         addClickListener(listenerId, handleClick);
-
-        console.log('heree6');
 
         return () => rmClickListener(listenerId);
     }, [addClickListener, handleClick, listenerId, ref, rmClickListener]);
-
-    console.log('heree3');
 
     const reset = () => {
         setClickedInside(false);
         setClickedInsideCount(0);
     };
-
-    console.log('heree4');
 
     return {
         ref,
