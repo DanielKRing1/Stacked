@@ -9,20 +9,26 @@ export const useOnClickOutsideComponent = (listenerId: string) => {
 
     const ref = useRef();
     const ctxt = useClickListener();
-    if (!ctxt) console.log('nope');
     if (!ctxt) throw new Error('ClickListener is undefined');
     const { addClickListener, rmClickListener } = ctxt;
 
+    const getAllChildrenIds = (element): any[] => {
+        const nestedChildren = [];
+
+        nestedChildren.push(element._nativeTag);
+
+        element._children.forEach((child) => {
+            if (!!child && !!child._children && child._children.length > 0) nestedChildren.push(...getAllChildrenIds(child));
+        });
+
+        return nestedChildren;
+    };
+
     const handleClick = useCallback((e: GestureResponderEvent) => {
         // Clicked
-        // console.log(e.target);
-        console.log('check this');
-        console.log(ref.current._children.length);
-        if (ref && ref.current && ref.current._children && ref.current._children.includes(e.target)) {
+        if (ref && ref.current && ref.current._children && getAllChildrenIds(ref.current).includes(e.target._nativeTag)) {
             console.log('INSIIIIIIDE');
             registerClickInside();
-
-            console.log(clickedInside);
         }
         // Clicked outside
         else {
