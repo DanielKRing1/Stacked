@@ -1,4 +1,4 @@
-import { genUID } from './utils/uid';
+import { genUID } from './uid';
 
 type TrieNode = {
     branches: {
@@ -7,7 +7,7 @@ type TrieNode = {
     children: any[];
 };
 
-class TrieTree {
+export class TrieTree {
     root: TrieNode = this.makeNode();
 
     constructor() {}
@@ -80,6 +80,23 @@ class TrieTree {
         const children: any[] = [];
 
         const searchedNode = this.getNode(searchString);
+        if (!searchedNode.found) return [];
+
+        console.log('flattened branches');
+        console.log(searchedNode.branch.branches);
+
+        this.flattenBranches(searchedNode.branch)
+            .filter((branch) => branch.children.length > 0)
+            .forEach((branch) => children.push(...branch.children));
+
+        return children;
+    }
+
+    getClosest(searchString: string): any[] {
+        const children: any[] = [];
+
+        const searchedNode = this.getNode(searchString);
+
         console.log('flattened branches');
         console.log(searchedNode.branch.branches);
 
@@ -103,17 +120,19 @@ class TrieTree {
     }
 }
 
+console.time('performance');
 const trie: TrieTree = new TrieTree();
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 1000000; i++) {
     trie.add(genUID());
 }
+console.timeEnd('performance');
 
-console.log(trie.root);
+// console.log(trie.root);
 
-// console.log('GET');
-// console.time('speed');
-// console.log(trie.get('ab'));
-// console.timeEnd('speed');
+console.log('GET');
+console.time('speed');
+console.log(trie.get('abc'));
+console.timeEnd('speed');
 
 // console.log('GET NODE');
 // console.log(trie.getNode('ab'));
