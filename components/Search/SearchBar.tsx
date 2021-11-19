@@ -9,9 +9,9 @@ type SearchBarProps = {
     placeholder: string;
     inputValue: string;
     setInputValue: (newValue: string) => void;
-    LeftComponent: FC;
-    DropdownComponent: FC;
-    RightComponent: FC;
+    LeftComponent: FC | undefined;
+    DropdownComponent: FC | undefined;
+    RightComponent: FC | undefined;
 };
 export const SearchBar: FC<SearchBarProps> = (props) => {
     const { placeholder, inputValue, setInputValue, LeftComponent, DropdownComponent, RightComponent } = props;
@@ -36,7 +36,7 @@ export const SearchBar: FC<SearchBarProps> = (props) => {
     return (
         <StyledRow ref={ref}>
             <Text>Start</Text>
-            <LeftComponent />
+            {!!LeftComponent && <LeftComponent />}
 
             <Column>
                 <StyledTextInput
@@ -52,7 +52,7 @@ export const SearchBar: FC<SearchBarProps> = (props) => {
                 {shouldDisplayDropdown && <DropdownComponent />}
             </Column>
 
-            <RightComponent />
+            {!!RightComponent && <RightComponent />}
             <Text>End</Text>
         </StyledRow>
     );

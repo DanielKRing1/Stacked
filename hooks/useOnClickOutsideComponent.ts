@@ -26,7 +26,7 @@ export const useOnClickOutsideComponent = (listenerId: string) => {
 
     const handleClick = useCallback((e: GestureResponderEvent) => {
         // Clicked
-        if (ref && ref.current && ref.current._children && getAllChildrenIds(ref.current).includes(e.target._nativeTag)) {
+        if (ref && ref.current && ref.current._children && e.target && getAllChildrenIds(ref.current).includes(e.target._nativeTag)) {
             console.log('INSIIIIIIDE');
             registerClickInside();
         }

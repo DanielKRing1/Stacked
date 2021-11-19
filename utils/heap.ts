@@ -157,24 +157,24 @@ export class Heap<T> {
     }
 }
 
-const heap: Heap<number> = new Heap((a, b) => a - b, 8, true);
-for (let i = 0; i < 20; i++) {
-    heap.push(Math.random() * 10);
-    // console.log(heap._list);
-    // console.log(heap._lastLeaf);
-}
+// const heap: Heap<number> = new Heap((a, b) => a - b, 8, true);
+// for (let i = 0; i < 20; i++) {
+//     heap.push(Math.random() * 10);
+//     // console.log(heap._list);
+//     // console.log(heap._lastLeaf);
+// }
+// // console.log(heap._list);
+
+// // console.log(heap.pop());
+// // console.log(heap._list);
+// // console.log(heap.pop());
+// // console.log(heap._list);
+
+// // console.log(heap._list);
+// for (let i = 0; i < 26; i++) {
+//     console.log(`${i}: ${heap.pop()}`);
+//     // console.log(heap._list.slice(0, 7));
+// }
 // console.log(heap._list);
 
-// console.log(heap.pop());
-// console.log(heap._list);
-// console.log(heap.pop());
-// console.log(heap._list);
-
-// console.log(heap._list);
-for (let i = 0; i < 26; i++) {
-    console.log(`${i}: ${heap.pop()}`);
-    // console.log(heap._list.slice(0, 7));
-}
-console.log(heap._list);
-
-// console.log(heap._list);
+// // console.log(heap._list);

@@ -40,6 +40,7 @@ export const RealmProvider: FC<any> = (props) => {
     // 3. Return ContextProvider
     const value = {
         realm,
+        setRealm,
         loadRealm,
     };
     return <RealmContext.Provider value={value}>{children}</RealmContext.Provider>;

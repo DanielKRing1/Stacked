@@ -1,26 +1,23 @@
-import * as React from 'react';
+import React from 'react';
 import { Button, Picker, ScrollView, StyleSheet, TextInput } from 'react-native';
-
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
-
-import re from 'realm';
-import DynamicRealm from 'dynamic-realm';
 import styled from 'styled-components/native';
-import { Column, Row } from '../components';
+
+import EditScreenInfo from '../../components/EditScreenInfo';
+import { Text, View } from '../../components/Themed';
+import { RootTabScreenProps } from '../../types';
+
+import DynamicRealm from 'dynamic-realm';
+import { Column, Row } from '../../components';
 import { useState } from 'react';
-import { Dict } from '../types-data-structure';
-import { useList } from '../hooks';
-import { useRealm } from '../contexts/RealmContext';
-import { getStack } from '../realm/readStack';
-import { createStack } from '../realm/createRealm';
-import { ClickListenerContext } from '../contexts';
+import { Dict } from '../../types-data-structure';
+import { useList } from '../../hooks';
+import { useRealm } from '../../contexts/RealmContext';
+import { createStack } from '../../realm/createRealm';
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
     const testKey = 'my property';
 
-    const { realm, loadRealm } = useRealm();
+    const { realm, setRealm, loadRealm } = useRealm();
 
     const [stackName, setStackName] = useState('');
     type StackProperty = {
@@ -45,12 +42,15 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
     const handleSaveSchema = async () => {
         const properties: Dict<string> = {};
         list.forEach((entry: StackProperty) => (properties[entry.propertyName] = entry.type));
+        console.log('My realm');
+        console.log(realm);
         const newRealm: Realm = await createStack(realm!, stackName, properties);
 
         // TODO Expose setRealm from RealmContext
         // Set realm instead of loading realm
 
-        loadRealm();
+        setRealm(newRealm);
+        // loadRealm();
     };
 
     // let r;

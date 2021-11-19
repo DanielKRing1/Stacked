@@ -34,8 +34,6 @@ const genStackSchemas = (stackName: string, snapshotProperties: Dict<any>): Stac
 };
 
 export const createStack = async (realm: Realm, stackName: string, snapshotProperties: Dict<any>): Promise<Realm> => {
-    realm.close();
-
     const { snapshotSchema, stackSchema } = genStackSchemas(stackName, snapshotProperties);
 
     // 1. Save Snapshot schema to DynamicRealm
@@ -45,6 +43,7 @@ export const createStack = async (realm: Realm, stackName: string, snapshotPrope
     DynamicRealm.saveSchema({ realmPath: STACK_REALM_PATH, schema: stackSchema });
 
     // 3. Create stack row in Stack schema
+    if (!!realm) realm.close();
     const newRealm: Realm = await DynamicRealm.loadRealm(STACK_REALM_PATH);
     newRealm.write(() => {
         newRealm.create(stackSchema.name, {
