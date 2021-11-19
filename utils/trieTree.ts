@@ -10,7 +10,9 @@ type TrieNode = {
 export class TrieTree {
     root: TrieNode = this.makeNode();
 
-    constructor() {}
+    constructor(list: string[] = []) {
+        list.forEach((str) => this.add(str));
+    }
 
     makeNode(): TrieNode {
         return {
@@ -28,8 +30,16 @@ export class TrieTree {
         const nextLetter: string = fullString.charAt(index);
         index++;
 
+        console.log('cascade');
+
+        console.log(fullString);
+        console.log(nextLetter);
+        console.log(index);
+
         // 3.1. Done; push children
-        if (index >= fullString.length) node.children.push(...children);
+        if (index > fullString.length) {
+            node.children.push(...children);
+        }
         // 3.2. Not done; cascade further
         else node.branches[nextLetter] = this.cascadeNewBranch(fullString, index, children);
 
@@ -37,11 +47,15 @@ export class TrieTree {
     }
 
     add(fullString: string, children: any[] = [fullString]): void {
+        console.log('adding');
         const { branch, index }: { branch: TrieNode; index: number } = this.getNode(fullString);
         // console.log(index);
 
         const leafLetter: string = fullString.charAt(index);
-        branch.branches[leafLetter] = this.cascadeNewBranch(fullString, index + 1, children);
+        console.log(leafLetter);
+        console.log(branch);
+        console.log(index);
+        if (index + 1 <= fullString.length) branch.branches[leafLetter] = this.cascadeNewBranch(fullString, index + 1, children);
     }
 
     getNode(searchString: string): { branch: TrieNode; index: number; found: boolean } {
@@ -120,21 +134,28 @@ export class TrieTree {
     }
 }
 
-console.time('performance');
-const trie: TrieTree = new TrieTree();
-for (let i = 0; i < 1000000; i++) {
-    trie.add(genUID());
-}
-console.timeEnd('performance');
+// // console.time('performance');
+// const trie: TrieTree = new TrieTree();
+// for (let i = 0; i < 1000000; i++) {
+//     trie.add(genUID());
+// }
+// // console.timeEnd('performance');
 
-// console.log(trie.root);
+// // console.log(trie.root);
 
-console.log('GET');
-console.time('speed');
-console.log(trie.get('abc'));
-console.timeEnd('speed');
+// console.log('GET');
+// // console.time('speed');
+// console.log(trie.get('abc'));
+// // console.timeEnd('speed');
 
-// console.log('GET NODE');
-// console.log(trie.getNode('ab'));
+// // console.log('GET NODE');
+// // console.log(trie.getNode('ab'));
 
-// console.log('abc'.charAt(0));
+// // console.log('abc'.charAt(0));
+
+const trieTree: TrieTree = new TrieTree();
+trieTree.add('h 1');
+trieTree.add('h 2');
+trieTree.add('h 3');
+
+console.log(trieTree.root);
