@@ -30,12 +30,6 @@ export class TrieTree {
         const nextLetter: string = fullString.charAt(index);
         index++;
 
-        console.log('cascade');
-
-        console.log(fullString);
-        console.log(nextLetter);
-        console.log(index);
-
         // 3.1. Done; push children
         if (index > fullString.length) {
             node.children.push(...children);
@@ -47,14 +41,10 @@ export class TrieTree {
     }
 
     add(fullString: string, children: any[] = [fullString]): void {
-        console.log('adding');
         const { branch, index }: { branch: TrieNode; index: number } = this.getNode(fullString);
         // console.log(index);
 
         const leafLetter: string = fullString.charAt(index);
-        console.log(leafLetter);
-        console.log(branch);
-        console.log(index);
         if (index + 1 <= fullString.length) branch.branches[leafLetter] = this.cascadeNewBranch(fullString, index + 1, children);
     }
 
